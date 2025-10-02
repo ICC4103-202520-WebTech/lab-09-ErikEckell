@@ -1,0 +1,27 @@
+<h1>Recipes</h1>
+
+<%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary mb-3" %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Cook Time</th>
+      <th>Difficulty</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recipes.each do |recipe| %>
+      <tr>
+        <td><%= link_to recipe.title, recipe %></td>
+        <td><%= recipe.cook_time %> min</td>
+        <td><%= recipe.difficulty %></td>
+        <td class="text-end">
+          <%= link_to "Edit", edit_recipe_path(recipe), class: "btn btn-sm btn-outline-secondary" %>
+          <%= button_to "Delete", recipe_path(recipe), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
