@@ -1,20 +1,23 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show]
 
   def index
-    @recipes = Recipe.order(:title)
+    @recipes = Recipe.order(:title) # Todos los usuarios, logueados o no
   end
+
 
   def show; end
 
   def new
-    @recipe = Recipe.new
+    @recipe = current_user.recipes.new
   end
 
   def edit; end
 
   def create
-    @recipe = Recipe.new(recipe_params)
+    @recipe = current_user.recipes.new(recipe_params)
+
     if @recipe.save
       redirect_to @recipe, notice: "Recipe created successfully."
     else
@@ -24,6 +27,7 @@ class RecipesController < ApplicationController
   end
 
   def update
+    # Actualizar rich text de instrucciones de forma segura
     if @recipe.update(recipe_params)
       redirect_to @recipe, notice: "Recipe updated successfully."
     else
@@ -46,6 +50,7 @@ class RecipesController < ApplicationController
     @recipe = Recipe.find(params[:id])
   end
 
+  # Asociamos recetas al usuario actual y permitimos rich_text correctamente
   def recipe_params
     params.require(:recipe).permit(:title, :cook_time, :difficulty, :instructions)
   end

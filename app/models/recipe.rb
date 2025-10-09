@@ -1,4 +1,5 @@
 class Recipe < ApplicationRecord
+  belongs_to :user        # <-- Asociación con Devise User
   has_rich_text :instructions
 
   validates :title, presence: true
