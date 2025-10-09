@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Lab 7 — Recipe Book Application: Authentication with Devise
 
 ## Objective
@@ -42,4 +43,4 @@ This lab reinforces:
 - Only authenticated users can create, edit, or delete recipes.
 - Public users can view the list of recipes.
 - Navigation updated to include authentication links.
-
+=======

@@ -1,0 +1,39 @@
+<%= form_with(model: recipe, local: true) do |form| %>
+  <% if recipe.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% recipe.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :cook_time, "Cook time (min)", class: "form-label" %>
+    <%= form.number_field :cook_time, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :difficulty, class: "form-label" %>
+    <%= form.select :difficulty,
+        options_for_select([["Easy","Easy"],["Medium","Medium"],["Hard","Hard"]], recipe.difficulty),
+        {},
+        class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :instructions, class: "form-label" %>
+    <div class="form-control p-0" style="border: 2px solid #ced4da; border-radius: .375rem; min-height: 250px;">
+      <%= form.rich_text_area :instructions, class: "trix-content p-2", style: "min-height: 240px;" %>
+    </div>
+  </div>
+
+  <%= form.submit class: "btn btn-primary" %>
+  <%= link_to "Cancel", recipes_path, class: "btn btn-secondary ms-2" %>
+<% end %>

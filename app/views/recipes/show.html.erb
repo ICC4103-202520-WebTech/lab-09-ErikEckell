@@ -1,0 +1,14 @@
+<h1><%= @recipe.title %></h1>
+
+<p><strong>Cook Time:</strong> <%= @recipe.cook_time %> min</p>
+<p><strong>Difficulty:</strong> <%= @recipe.difficulty %></p>
+
+<h3>Instructions</h3>
+<div class="card p-3">
+  <%= @recipe.instructions %>
+</div>
+
+<div class="mt-3">
+  <%= link_to "Edit", edit_recipe_path(@recipe), class: "btn btn-outline-secondary" %>
+  <%= link_to "Back", recipes_path, class: "btn btn-outline-primary" %>
+</div>
