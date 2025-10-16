@@ -1,34 +1,31 @@
-<h1>Recipes</h1>
+<h1>All Recipes</h1>
 
-<%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary mb-3" %>
+<% @recipes.each do |recipe| %>
+  <div class="card mb-3 p-3 shadow-sm">
+    <h3><%= link_to recipe.title, recipe %></h3>
+    <p><strong>Difficulty:</strong> <%= recipe.difficulty %></p>
+    <p><strong>Cook time:</strong> <%= recipe.cook_time %> minutes</p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Cook Time</th>
-      <th>Difficulty</th>
-      <th>Created by</th> <!-- Nueva columna -->
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @recipes.each do |recipe| %>
-      <tr>
-        <td><%= link_to recipe.title, recipe %></td>
-        <td><%= recipe.cook_time %> min</td>
-        <td><%= recipe.difficulty %></td>
-        <td><%= recipe.user.email %></td> <!-- Mostrar email del creador -->
-        <td class="text-end">
-          <% if user_signed_in? %>
-            <%= link_to "Edit", edit_recipe_path(recipe), class: "btn btn-sm btn-outline-secondary" %>
-            <%= link_to "Delete", recipe,
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                  class: "btn btn-sm btn-outline-danger" %>
-          <% end %>
-        </td>
-      </tr>
+    <%# 👇 Mostrar el autor si existe %>
+    <% if recipe.user.present? %>
+      <p class="text-muted">
+        Created by: <%= recipe.user.email %>
+      </p>
+    <% else %>
+      <p class="text-muted">Created by: Unknown</p>
     <% end %>
-  </tbody>
-</table>
 
+    <%# 👇 Solo mostrar botones si el usuario tiene permiso %>
+    <div class="mt-2">
+      <% if can?(:edit, recipe) %>
+        <%= link_to "Edit", edit_recipe_path(recipe), class: "btn btn-warning btn-sm" %>
+      <% end %>
+
+      <% if can?(:destroy, recipe) %>
+        <%= button_to "Delete", recipe_path(recipe), method: :delete,
+              data: { turbo_confirm: "Are you sure?" },
+              class: "btn btn-danger btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

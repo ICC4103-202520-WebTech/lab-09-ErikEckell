@@ -68,3 +68,4 @@ gem "devise", "~> 4.9"
 
 gem "importmap-rails"
 
+gem "cancancan", "~> 3.5"

@@ -1,14 +1,28 @@
 <h1><%= @recipe.title %></h1>
 
-<p><strong>Cook Time:</strong> <%= @recipe.cook_time %> min</p>
 <p><strong>Difficulty:</strong> <%= @recipe.difficulty %></p>
+<p><strong>Cook time:</strong> <%= @recipe.cook_time %> minutes</p>
 
-<h3>Instructions</h3>
-<div class="card p-3">
-  <%= @recipe.instructions %>
-</div>
+<% if @recipe.user.present? %>
+  <p class="text-muted">
+    Created by: <%= @recipe.user.email %>
+  </p>
+<% end %>
 
 <div class="mt-3">
-  <%= link_to "Edit", edit_recipe_path(@recipe), class: "btn btn-outline-secondary" %>
-  <%= link_to "Back", recipes_path, class: "btn btn-outline-primary" %>
+  <%= @recipe.instructions.to_s.html_safe %>
 </div>
+
+<hr>
+
+<% if can?(:edit, @recipe) %>
+  <%= link_to "Edit", edit_recipe_path(@recipe), class: "btn btn-warning" %>
+<% end %>
+
+<% if can?(:destroy, @recipe) %>
+  <%= button_to "Delete", recipe_path(@recipe), method: :delete,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "btn btn-danger" %>
+<% end %>
+
+<%= link_to "Back to recipes", recipes_path, class: "btn btn-secondary" %>

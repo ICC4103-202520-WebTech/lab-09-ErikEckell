@@ -1,22 +1,19 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
+  load_and_authorize_resource # CanCanCan se encarga de set_recipe automáticamente
 
   def index
-    @recipes = Recipe.order(:title) # Todos los usuarios, logueados o no
+    @recipes = Recipe.order(:title) # Todos pueden ver todas las recetas
   end
 
-
-  def show; end
+  def show
+  end
 
   def new
-    @recipe = current_user.recipes.new
   end
 
-  def edit; end
-
   def create
-    @recipe = current_user.recipes.new(recipe_params)
+    @recipe.user = current_user
 
     if @recipe.save
       redirect_to @recipe, notice: "Recipe created successfully."
@@ -26,8 +23,10 @@ class RecipesController < ApplicationController
     end
   end
 
+  def edit
+  end
+
   def update
-    # Actualizar rich text de instrucciones de forma segura
     if @recipe.update(recipe_params)
       redirect_to @recipe, notice: "Recipe updated successfully."
     else
@@ -46,11 +45,6 @@ class RecipesController < ApplicationController
 
   private
 
-  def set_recipe
-    @recipe = Recipe.find(params[:id])
-  end
-
-  # Asociamos recetas al usuario actual y permitimos rich_text correctamente
   def recipe_params
     params.require(:recipe).permit(:title, :cook_time, :difficulty, :instructions)
   end
