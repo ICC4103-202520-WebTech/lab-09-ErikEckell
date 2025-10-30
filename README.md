@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Lab 10 — Deploying the Recipe Book Application with Kamal on DigitalOcean
 
 ## Objective
@@ -48,3 +49,4 @@ This lab consolidates your knowledge of:
   - The IP address where the app can be accessed.
 - Clean repository ready for evaluation.
 
+=======

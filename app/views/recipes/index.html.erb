@@ -1,0 +1,31 @@
+<h1>All Recipes</h1>
+
+<% @recipes.each do |recipe| %>
+  <div class="card mb-3 p-3 shadow-sm">
+    <h3><%= link_to recipe.title, recipe %></h3>
+    <p><strong>Difficulty:</strong> <%= recipe.difficulty %></p>
+    <p><strong>Cook time:</strong> <%= recipe.cook_time %> minutes</p>
+
+    <%# 👇 Mostrar el autor si existe %>
+    <% if recipe.user.present? %>
+      <p class="text-muted">
+        Created by: <%= recipe.user.email %>
+      </p>
+    <% else %>
+      <p class="text-muted">Created by: Unknown</p>
+    <% end %>
+
+    <%# 👇 Solo mostrar botones si el usuario tiene permiso %>
+    <div class="mt-2">
+      <% if can?(:edit, recipe) %>
+        <%= link_to "Edit", edit_recipe_path(recipe), class: "btn btn-warning btn-sm" %>
+      <% end %>
+
+      <% if can?(:destroy, recipe) %>
+        <%= button_to "Delete", recipe_path(recipe), method: :delete,
+              data: { turbo_confirm: "Are you sure?" },
+              class: "btn btn-danger btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
